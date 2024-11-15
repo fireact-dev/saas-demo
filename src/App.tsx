@@ -1,4 +1,11 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
+import LanguageDetector from 'i18next-browser-languagedetector';
+import en from './i18n/locales/en';
+import zh from './i18n/locales/zh';
+import enSaas from './i18n/locales/saas/en';
+import zhSaas from './i18n/locales/saas/zh';
 import {
   AuthProvider,
   ConfigProvider,
@@ -38,6 +45,31 @@ import {
 } from '@fireact.dev/saas';
 import config from './config.json';
 import saasConfig from './saasConfig.json';
+
+// Initialize i18next
+i18n
+  .use(LanguageDetector)
+  .use(initReactI18next)
+  .init({
+    resources: {
+      en: {
+        translation: {
+          ...en,
+          ...enSaas
+        }
+      },
+      zh: {
+        translation: {
+          ...zh,
+          ...zhSaas
+        }
+      }
+    },
+    fallbackLng: 'en',
+    interpolation: {
+      escapeValue: false
+    }
+  });
 
 // Combine paths from both config files
 const paths = {
