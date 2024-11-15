@@ -1,19 +1,65 @@
-/**
- * Import function triggers from their respective submodules:
- *
- * import {onCall} from "firebase-functions/v2/https";
- * import {onDocumentWritten} from "firebase-functions/v2/firestore";
- *
- * See a full list of supported triggers at https://firebase.google.com/docs/functions
- */
+import { initializeApp } from 'firebase-admin/app';
+import configFile from './saasConfig.json';
+import type { Plan, Permission } from '@fireact.dev/saas-cloud-functions';
+import {
+  createSubscription,
+  createInvite,
+  getSubscriptionUsers,
+  acceptInvite,
+  rejectInvite,
+  revokeInvite,
+  removeUser,
+  updateUserPermissions,
+  stripeWebhook,
+  changeSubscriptionPlan,
+  cancelSubscription,
+  getPaymentMethods,
+  createSetupIntent,
+  setDefaultPaymentMethod,
+  deletePaymentMethod,
+  updateBillingDetails,
+  getBillingDetails,
+  transferSubscriptionOwnership
+} from '@fireact.dev/saas-cloud-functions';
 
-import {onRequest} from "firebase-functions/v2/https";
-import * as logger from "firebase-functions/logger";
+// Initialize Firebase Admin
+initializeApp();
 
-// Start writing functions
-// https://firebase.google.com/docs/functions/typescript
+// Set up global config
+declare global {
+    var saasConfig: {
+        stripe: {
+            secret_api_key: string;
+            end_point_secret: string;
+        };
+        emulators: {
+            enabled: boolean;
+            useTestKeys: boolean;
+        };
+        plans: Plan[];
+        permissions: Record<string, Permission>;
+    };
+}
+global.saasConfig = configFile;
 
-// export const helloWorld = onRequest((request, response) => {
-//   logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+// Export cloud functions
+export {
+  createSubscription,
+  createInvite,
+  getSubscriptionUsers,
+  acceptInvite,
+  rejectInvite,
+  revokeInvite,
+  removeUser,
+  updateUserPermissions,
+  stripeWebhook,
+  changeSubscriptionPlan,
+  cancelSubscription,
+  getPaymentMethods,
+  createSetupIntent,
+  setDefaultPaymentMethod,
+  deletePaymentMethod,
+  updateBillingDetails,
+  getBillingDetails,
+  transferSubscriptionOwnership
+}

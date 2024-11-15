@@ -8,68 +8,139 @@ import {
   SignIn,
   SignUp,
   ResetPassword,
-  Dashboard,
   Profile,
   EditName,
   EditEmail,
   ChangePassword,
   DeleteAccount,
-  DesktopMenuItems,
-  MobileMenuItems,
   Logo
 } from '@fireact.dev/core';
+import {
+  CreatePlan,
+  Home,
+  SubscriptionDashboard,
+  SubscriptionLayout,
+  SubscriptionDesktopMenu,
+  SubscriptionMobileMenu,
+  SubscriptionProvider,
+  MainDesktopMenu,
+  MainMobileMenu,
+  Billing,
+  SubscriptionSettings,
+  ProtectedSubscriptionRoute,
+  UserList,
+  InviteUser,
+  ChangePlan,
+  CancelSubscription,
+  ManagePaymentMethods,
+  UpdateBillingDetails,
+  TransferSubscriptionOwnership
+} from '@fireact.dev/saas';
 import config from './config.json';
-import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
-import LanguageDetector from 'i18next-browser-languagedetector';
-import en from './i18n/locales/en';
-import zh from './i18n/locales/zh';
+import saasConfig from './saasConfig.json';
 
-// Initialize i18next
-i18n
-  .use(LanguageDetector)
-  .use(initReactI18next)
-  .init({
-    resources: {
-      en: {
-        translation: en
-      },
-      zh: {
-        translation: zh
-      }
-    },
-    fallbackLng: 'en',
-    interpolation: {
-      escapeValue: false
-    }
-  });
+// Combine paths from both config files
+const paths = {
+  ...config.pages,
+  ...saasConfig.pages
+};
+
+// Combine configs and include combined paths
+const combinedConfig = {
+  ...config,
+  ...saasConfig,
+  pages: paths
+};
 
 function App() {
   return (
     <Router>
-      <ConfigProvider config={config}>
+      <ConfigProvider config={combinedConfig}>
         <AuthProvider>
           <LoadingProvider>
             <Routes>
               <Route element={
                 <AuthenticatedLayout 
-                  desktopMenuItems={<DesktopMenuItems />}
-                  mobileMenuItems={<MobileMenuItems />}
+                  desktopMenuItems={<MainDesktopMenu />}
+                  mobileMenuItems={<MainMobileMenu />}
                   logo={<Logo className="w-10 h-10" />}
                 />
               }>
-                <Route path={config.pages.home} element={<Navigate to={config.pages.dashboard} />} />
-                <Route path={config.pages.dashboard} element={<Dashboard />} />
-                <Route path={config.pages.profile} element={<Profile />} />
-                <Route path={config.pages.editName} element={<EditName />} />
-                <Route path={config.pages.editEmail} element={<EditEmail />} />
-                <Route path={config.pages.changePassword} element={<ChangePassword />} />
-                <Route path={config.pages.deleteAccount} element={<DeleteAccount />} />
+                <Route path={paths.home} element={<Navigate to={paths.dashboard} />} />
+                <Route path={paths.dashboard} element={<Home />} />
+                <Route path={paths.profile} element={<Profile />} />
+                <Route path={paths.editName} element={<EditName />} />
+                <Route path={paths.editEmail} element={<EditEmail />} />
+                <Route path={paths.changePassword} element={<ChangePassword />} />
+                <Route path={paths.deleteAccount} element={<DeleteAccount />} />
+                <Route path={paths.createPlan} element={<CreatePlan />} />
               </Route>
+              
+              <Route path={paths.subscription} element={
+                <SubscriptionProvider>
+                  <SubscriptionLayout 
+                    desktopMenu={<SubscriptionDesktopMenu />}
+                    mobileMenu={<SubscriptionMobileMenu />}
+                    logo={<Logo className="w-10 h-10" />}
+                  />
+                </SubscriptionProvider>
+              }>
+                <Route index element={
+                  <ProtectedSubscriptionRoute requiredPermissions={['access']}>
+                    <SubscriptionDashboard />
+                  </ProtectedSubscriptionRoute>
+                } />
+                <Route path={paths.users} element={
+                  <ProtectedSubscriptionRoute requiredPermissions={['admin']}>
+                    <UserList />
+                  </ProtectedSubscriptionRoute>
+                } />
+                <Route path={paths.invite} element={
+                  <ProtectedSubscriptionRoute requiredPermissions={['admin']}>
+                    <InviteUser />
+                  </ProtectedSubscriptionRoute>
+                } />
+                <Route path={paths.billing} element={
+                  <ProtectedSubscriptionRoute requiredPermissions={['admin']}>
+                    <Billing />
+                  </ProtectedSubscriptionRoute>
+                } />
+                <Route path={paths.settings} element={
+                  <ProtectedSubscriptionRoute requiredPermissions={['admin']}>
+                    <SubscriptionSettings />
+                  </ProtectedSubscriptionRoute>
+                } />
+                <Route path={paths.changePlan} element={
+                  <ProtectedSubscriptionRoute requiredPermissions={['owner']}>
+                    <ChangePlan />
+                  </ProtectedSubscriptionRoute>
+                } />
+                <Route path={paths.cancelSubscription} element={
+                  <ProtectedSubscriptionRoute requiredPermissions={['owner']}>
+                    <CancelSubscription />
+                  </ProtectedSubscriptionRoute>
+                } />
+                <Route path={paths.managePaymentMethods} element={
+                  <ProtectedSubscriptionRoute requiredPermissions={['owner']}>
+                    <ManagePaymentMethods />
+                  </ProtectedSubscriptionRoute>
+                } />
+                <Route path={paths.updateBillingDetails} element={
+                  <ProtectedSubscriptionRoute requiredPermissions={['owner']}>
+                    <UpdateBillingDetails />
+                  </ProtectedSubscriptionRoute>
+                } />
+                <Route path={paths.transferOwnership} element={
+                  <ProtectedSubscriptionRoute requiredPermissions={['owner']}>
+                    <TransferSubscriptionOwnership />
+                  </ProtectedSubscriptionRoute>
+                } />
+              </Route>
+
               <Route element={<PublicLayout logo={<Logo className="w-20 h-20" />} />}>
-                <Route path={config.pages.signIn} element={<SignIn />} />
-                <Route path={config.pages.signUp} element={<SignUp />} />
-                <Route path={config.pages.resetPassword} element={<ResetPassword />} />
+                <Route path={paths.signIn} element={<SignIn />} />
+                <Route path={paths.signUp} element={<SignUp />} />
+                <Route path={paths.resetPassword} element={<ResetPassword />} />
               </Route>
             </Routes>
           </LoadingProvider>

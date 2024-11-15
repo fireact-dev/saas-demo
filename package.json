@@ -11,8 +11,10 @@
   },
   "dependencies": {
     "@fireact.dev/core": "^1.1.0",
+    "@fireact.dev/saas": "^1.0.0",
     "@headlessui/react": "^1.7.19",
     "@heroicons/react": "^2.1.5",
+    "@stripe/stripe-js": "^4.10.0",
     "firebase": "^11.0.2",
     "i18next": "^23.16.5",
     "i18next-browser-languagedetector": "^8.0.0",
