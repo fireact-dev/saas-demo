@@ -1,50 +1,31 @@
-# React + TypeScript + Vite
+# Fireact.dev SaaS Demo
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a demo repository showcasing the [@fireact.dev/saas](https://www.npmjs.com/package/@fireact.dev/saas) and [@fireact.dev/saas-cloud-functions](https://www.npmjs.com/package/@fireact.dev/saas-cloud-functions) packages, which provide a complete solution for building SaaS (Software as a Service) applications with React and Firebase.
 
-Currently, two official plugins are available:
+![SaaS Demo Screenshot](saas-demo.png)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Key Features
 
-## Expanding the ESLint configuration
+### @fireact.dev/saas Package
+- **Subscription Management**: Complete subscription lifecycle management including creation, plan changes, and cancellation
+- **User Management**: Comprehensive user management with invitations, permissions, and role-based access control
+- **Billing Integration**: Seamless Stripe integration for payment processing and billing management
+- **Ready-to-Use Components**: Pre-built components for subscription dashboard, user management, billing interface, and more
+- **Responsive Layouts**: Mobile-friendly layouts with desktop and mobile navigation components
+- **Permission System**: Flexible permission system with customizable roles and access levels
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### @fireact.dev/saas-cloud-functions Package
+- **Firebase Functions**: Pre-configured cloud functions for handling subscriptions, users, and payments
+- **Stripe Integration**: Built-in webhook handling and payment processing
+- **User Management**: Complete backend support for user invitations and permissions
+- **Billing Operations**: Functions for managing payment methods, billing details, and subscription changes
 
-- Configure the top-level `parserOptions` property like this:
+## Live Demo
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+To experience the demo in action, visit:
+https://fireact.dev/demos/
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## Documentation
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+For detailed instructions on how to build your own SaaS application using these packages, visit our documentation:
+https://docs.fireact.dev/saas/
