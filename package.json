@@ -10,8 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@fireact.dev/core": "^1.2.1",
-    "@fireact.dev/saas": "^1.0.4",
+    "@fireact.dev/core": "^1.2.4",
+    "@fireact.dev/saas": "^1.0.6",
     "@headlessui/react": "^1.7.19",
     "@heroicons/react": "^2.1.5",
     "@stripe/stripe-js": "^4.10.0",
@@ -37,6 +37,6 @@
     "postcss": "^8.4.49",
     "typescript": "~5.6.2",
     "typescript-eslint": "^8.11.0",
-    "vite": "^5.4.10"
+    "vite": "^6.3.5"
   }
 }
